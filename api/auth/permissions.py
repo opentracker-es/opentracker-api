@@ -27,7 +27,9 @@ ROLE_PERMISSIONS = {
         "view_incidents",
         "manage_incidents",
         "view_settings",
-        "update_settings"
+        "update_settings",
+        "view_backups",
+        "manage_backups"
     ],
     "tracker": [
         "create_time_records",

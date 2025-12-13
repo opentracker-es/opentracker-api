@@ -9,6 +9,7 @@ services:
       - ./api:/app/api
       - ./tests:/app/tests
       - ./pytest.ini:/app/pytest.ini
+      - ./backups:/app/backups
     env_file:
       - .env
     environment:

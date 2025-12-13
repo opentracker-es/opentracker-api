@@ -6,7 +6,8 @@ import logging
 from dotenv import load_dotenv
 
 from .database import init_db, init_default_settings
-from .routers import workers, time_records, auth, incidents, settings, companies, pause_types, change_requests, gdpr
+from .routers import workers, time_records, auth, incidents, settings, companies, pause_types, change_requests, gdpr, backups
+from .services.scheduler_service import scheduler_service
 
 load_dotenv()
 
@@ -44,6 +45,7 @@ app.include_router(pause_types.router, prefix="/api", tags=["Pause Types"])
 app.include_router(incidents.router, prefix="/api/incidents", tags=["Incidents"])
 app.include_router(change_requests.router, prefix="/api/change-requests", tags=["Change Requests"])
 app.include_router(settings.router, prefix="/api", tags=["Settings"])
+app.include_router(backups.router, prefix="/api", tags=["Backups"])
 app.include_router(gdpr.router, tags=["GDPR"])
 
 
@@ -51,6 +53,12 @@ app.include_router(gdpr.router, tags=["GDPR"])
 async def startup():
     await init_db()
     await init_default_settings()
+    await scheduler_service.start()
+
+
+@app.on_event("shutdown")
+async def shutdown():
+    scheduler_service.stop()
 
 
 @app.get("/", tags=["Health"])
