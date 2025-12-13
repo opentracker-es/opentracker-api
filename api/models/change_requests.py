@@ -92,7 +92,8 @@ class ChangeRequestResponse(BaseModel):
     reviewed_by_admin_id: Optional[str] = None
     reviewed_by_admin_email: Optional[str] = None
     reviewed_at: Optional[AwareDatetime] = None
-    admin_public_comment: Optional[str] = None  # No incluir admin_internal_notes en response
+    admin_internal_notes: Optional[str] = None  # Solo visible para admins
+    admin_public_comment: Optional[str] = None  # Se envía al trabajador por email
 
     # Validaciones (solo en GET /change-requests/{id})
     validation_errors: Optional[List[str]] = None
