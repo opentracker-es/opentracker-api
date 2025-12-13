@@ -15,6 +15,7 @@ Backend API para el sistema OpenTracker, construido con FastAPI y MongoDB.
 - **Sistema de Empresas**: Soporte multi-empresa con trabajadores asociados
 - **Envío de Emails**: Recuperación de contraseña vía SMTP
 - **Gestión de Incidencias**: Sistema completo de reportes y seguimiento
+- **Sistema de Backups**: Copias de seguridad automáticas con múltiples backends (S3, SFTP, Local)
 
 ## 📋 Requisitos
 
@@ -207,6 +208,13 @@ Incidencias reportadas por trabajadores:
 Configuración global:
 - contact_email: Email de contacto para soporte
 - webapp_url: URL de la aplicación web
+- backup_config: Configuración de backups automáticos
+
+### Backups
+Registros de copias de seguridad:
+- Campos: filename, storage_path, storage_type, size_bytes, status, trigger
+- Estados: in_progress, completed, failed
+- Trigger: scheduled, manual, pre_restore
 
 ## 🔄 Flujos Principales
 
@@ -264,6 +272,64 @@ Configuración global:
 ### Configuración (Admin only)
 - `GET /api/settings/` - Obtener configuración
 - `PATCH /api/settings/` - Actualizar configuración
+
+### Backups (Admin only)
+- `GET /api/backups/` - Listar backups
+- `POST /api/backups/trigger` - Crear backup manual
+- `GET /api/backups/{id}` - Detalle de backup
+- `DELETE /api/backups/{id}` - Eliminar backup
+- `POST /api/backups/{id}/restore` - Restaurar desde backup
+- `GET /api/backups/{id}/download-url` - URL de descarga
+- `POST /api/backups/test-connection` - Probar conexión storage
+- `GET /api/backups/schedule/status` - Estado del scheduler
+
+## 💾 Sistema de Backups
+
+La API incluye un sistema completo de copias de seguridad de MongoDB:
+
+### Características
+
+- **Programación automática**: Backups diarios, semanales o mensuales via APScheduler
+- **Múltiples backends de almacenamiento**:
+  - **S3-compatible**: AWS S3, Backblaze B2, MinIO, DigitalOcean Spaces
+  - **SFTP**: Servidores con acceso SFTP
+  - **Local**: Almacenamiento en el servidor (bind mount)
+- **Retención configurable**: Por defecto 730 días (2 años)
+- **Restauración segura**: Backup automático pre-restore
+- **Credenciales encriptadas**: Fernet encryption usando SECRET_KEY
+
+### Configuración desde Admin UI
+
+1. Ir a **Settings → Backups**
+2. Activar backups programados
+3. Configurar frecuencia (diario/semanal/mensual)
+4. Seleccionar hora UTC
+5. Elegir backend de almacenamiento
+6. Configurar credenciales del storage
+7. Probar conexión
+8. Guardar
+
+### Configuración Docker para Backups Locales
+
+Para almacenamiento local, el directorio de backups debe ser un **bind mount**:
+
+```yaml
+# docker-compose.yml
+services:
+  api:
+    volumes:
+      - ./backups:/app/backups
+```
+
+```bash
+# En servidor, crear directorio antes de deploy
+sudo mkdir -p /opt/opentracker/backups
+sudo chown 1000:1000 /opt/opentracker/backups
+```
+
+### Nota sobre Réplicas
+
+Para backups locales, usar `API_REPLICAS=1` para evitar conflictos. Con S3/SFTP se pueden usar múltiples réplicas.
 
 ## 🧪 Testing
 
