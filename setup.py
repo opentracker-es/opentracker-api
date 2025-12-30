@@ -1,5 +1,5 @@
-# OpenTracker - Sistema de Registro de Jornada Laboral
-# Copyright (C) 2024 OpenTracker Contributors
+# OpenJornada - Sistema de Registro de Jornada Laboral
+# Copyright (C) 2024 OpenJornada Contributors
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published
@@ -9,14 +9,14 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="opentracker-api",
+    name="openjornada-api",
     version="1.0.0",
-    description="OpenTracker API - Sistema de Registro de Jornada Laboral",
+    description="OpenJornada API - Sistema de Registro de Jornada Laboral",
     long_description=open("../README.md").read() if __name__ == "__main__" else "",
     long_description_content_type="text/markdown",
-    author="OpenTracker Contributors",
-    author_email="contact@opentracker.com",
-    url="https://github.com/[YOUR-ORG]/opentracker",
+    author="OpenJornada Contributors",
+    author_email="contact@openjornada.com",
+    url="https://github.com/[YOUR-ORG]/openjornada",
     license="AGPL-3.0",
     packages=find_packages(),
     python_requires=">=3.10",
@@ -45,8 +45,8 @@ setup(
     ],
     keywords="time-tracking workforce-management agpl open-source",
     project_urls={
-        "Bug Reports": "https://github.com/[YOUR-ORG]/opentracker/issues",
-        "Source": "https://github.com/[YOUR-ORG]/opentracker",
-        "Documentation": "https://github.com/[YOUR-ORG]/opentracker/tree/main/docs",
+        "Bug Reports": "https://github.com/[YOUR-ORG]/openjornada/issues",
+        "Source": "https://github.com/[YOUR-ORG]/openjornada",
+        "Documentation": "https://github.com/[YOUR-ORG]/openjornada/tree/main/docs",
     },
 )

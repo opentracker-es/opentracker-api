@@ -1,6 +1,6 @@
-# OpenTracker API
+# OpenJornada API
 
-Backend API para el sistema OpenTracker, construido con FastAPI y MongoDB.
+Backend API para el sistema OpenJornada, construido con FastAPI y MongoDB.
 
 ## 🚀 Características
 
@@ -29,7 +29,7 @@ Backend API para el sistema OpenTracker, construido con FastAPI y MongoDB.
 
 ```bash
 # Clonar el repositorio
-cd opentracker-api
+cd openjornada-api
 
 # Configurar variables de entorno
 cp .env.example .env
@@ -86,8 +86,8 @@ SMTP_PORT=587
 SMTP_USER=your_email@example.com
 SMTP_PASSWORD=your_password
 SMTP_FROM_EMAIL=noreply@example.com
-SMTP_FROM_NAME=OpenTracker
-EMAIL_APP_NAME=OpenTracker
+SMTP_FROM_NAME=OpenJornada
+EMAIL_APP_NAME=OpenJornada
 ```
 
 ## 👥 Gestión de Usuarios API
@@ -134,7 +134,7 @@ Una vez que la API esté corriendo, puedes acceder a:
 ## 🏗️ Estructura del Proyecto
 
 ```
-opentracker-api/
+openjornada-api/
 ├── api/
 │   ├── auth/              # Autenticación y permisos
 │   ├── models/            # Modelos Pydantic
@@ -323,8 +323,8 @@ services:
 
 ```bash
 # En servidor, crear directorio antes de deploy
-sudo mkdir -p /opt/opentracker/backups
-sudo chown 1000:1000 /opt/opentracker/backups
+sudo mkdir -p /opt/openjornada/backups
+sudo chown 1000:1000 /opt/openjornada/backups
 ```
 
 ### Nota sobre Réplicas
@@ -421,10 +421,10 @@ La imagen oficial está disponible en GitHub Container Registry:
 
 ```bash
 # Última versión
-docker pull ghcr.io/opentracker-es/opentracker-api:latest
+docker pull ghcr.io/openjornada/openjornada-api:latest
 
 # Versión específica
-docker pull ghcr.io/opentracker-es/opentracker-api:1.0.0
+docker pull ghcr.io/openjornada/openjornada-api:1.0.0
 ```
 
 **Plataformas soportadas:** linux/amd64, linux/arm64
@@ -452,9 +452,9 @@ Las contribuciones son bienvenidas. Por favor abre un issue antes de hacer cambi
 
 ## 🔗 Enlaces
 
-- **Sitio web**: [www.opentracker.es](https://www.opentracker.es)
-- **Email**: info@opentracker.es
+- **Sitio web**: [www.openjornada.es](https://www.openjornada.es)
+- **Email**: info@openjornada.es
 
 ---
 
-Parte del proyecto [OpenTracker](https://www.opentracker.es)
+Parte del proyecto [OpenJornada](https://www.openjornada.es)

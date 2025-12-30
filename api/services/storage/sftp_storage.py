@@ -24,7 +24,7 @@ class SFTPStorage(StorageBackend):
         port: int,
         username: str,
         password_encrypted: str,
-        remote_path: str = "/backups/opentracker/"
+        remote_path: str = "/backups/openjornada/"
     ):
         self.host = host
         self.port = port
@@ -186,7 +186,7 @@ class SFTPStoragePlain(SFTPStorage):
         port: int,
         username: str,
         password: str,
-        remote_path: str = "/backups/opentracker/"
+        remote_path: str = "/backups/openjornada/"
     ):
         self.host = host
         self.port = port

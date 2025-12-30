@@ -295,7 +295,7 @@ async def test_connection(
             "port": request.sftp_port or 22,
             "username": request.sftp_username,
             "password": request.sftp_password,
-            "remote_path": request.sftp_remote_path or "/backups/opentracker/"
+            "remote_path": request.sftp_remote_path or "/backups/openjornada/"
         }
 
     elif request.storage_type == "local":

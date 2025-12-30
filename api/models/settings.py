@@ -38,7 +38,7 @@ class SFTPConfigInput(BaseModel):
     port: int = 22
     username: str
     password: str
-    remote_path: str = "/backups/opentracker/"
+    remote_path: str = "/backups/openjornada/"
 
 
 class SFTPConfigStored(BaseModel):
@@ -47,7 +47,7 @@ class SFTPConfigStored(BaseModel):
     port: int = 22
     username: str
     password_encrypted: str
-    remote_path: str = "/backups/opentracker/"
+    remote_path: str = "/backups/openjornada/"
 
 
 class LocalConfig(BaseModel):

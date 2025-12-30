@@ -49,7 +49,7 @@ class BackupService:
                 port=sftp_config.get("port", 22),
                 username=sftp_config["username"],
                 password_encrypted=sftp_config["password_encrypted"],
-                remote_path=sftp_config.get("remote_path", "/backups/opentracker/")
+                remote_path=sftp_config.get("remote_path", "/backups/openjornada/")
             )
         else:  # local
             local_config = backup_config.get("local_config", {})
@@ -80,7 +80,7 @@ class BackupService:
                     port=sftp_config.get("port", 22),
                     username=sftp_config["username"],
                     password=sftp_config["password"],
-                    remote_path=sftp_config.get("remote_path", "/backups/opentracker/")
+                    remote_path=sftp_config.get("remote_path", "/backups/openjornada/")
                 )
             elif storage_type == "local":
                 path = local_config.get("path", "/app/backups") if local_config else "/app/backups"
