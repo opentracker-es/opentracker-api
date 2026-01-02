@@ -1,5 +1,5 @@
 # OpenJornada - Sistema de Registro de Jornada Laboral
-# Copyright (C) 2024 OpenJornada Contributors
+# Copyright (C) 2024 HappyAndroids (https://happyandroids.com)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published
@@ -14,9 +14,9 @@ setup(
     description="OpenJornada API - Sistema de Registro de Jornada Laboral",
     long_description=open("../README.md").read() if __name__ == "__main__" else "",
     long_description_content_type="text/markdown",
-    author="OpenJornada Contributors",
-    author_email="contact@openjornada.com",
-    url="https://github.com/[YOUR-ORG]/openjornada",
+    author="HappyAndroids",
+    author_email="info@openjornada.es",
+    url="https://www.openjornada.es",
     license="AGPL-3.0",
     packages=find_packages(),
     python_requires=">=3.10",
@@ -43,10 +43,12 @@ setup(
         "Topic :: Office/Business",
         "Topic :: Software Development :: Libraries :: Application Frameworks",
     ],
-    keywords="time-tracking workforce-management agpl open-source",
+    keywords="time-tracking workforce-management agpl open-source openjornada",
     project_urls={
-        "Bug Reports": "https://github.com/[YOUR-ORG]/openjornada/issues",
-        "Source": "https://github.com/[YOUR-ORG]/openjornada",
-        "Documentation": "https://github.com/[YOUR-ORG]/openjornada/tree/main/docs",
+        "Homepage": "https://www.openjornada.es",
+        "Bug Reports": "https://github.com/openjornada/openjornada-api/issues",
+        "Source": "https://github.com/openjornada/openjornada-api",
+        "Documentation": "https://github.com/openjornada/openjornada-api/tree/main/docs",
+        "Author": "https://happyandroids.com",
     },
 )
