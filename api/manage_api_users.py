@@ -7,7 +7,8 @@ Usage: python -m api.manage_api_users --help
 import asyncio
 import sys
 import os
-from datetime import datetime
+import secrets
+from datetime import datetime, timedelta
 from getpass import getpass
 import argparse
 from typing import Optional, List
@@ -16,6 +17,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from api.database import db, client
 from api.auth.auth_handler import get_password_hash
+from api.services.email_service import EmailService
 from bson import ObjectId
 
 
@@ -185,6 +187,8 @@ async def main():
     create_parser.add_argument('email', help='Email address')
     create_parser.add_argument('role', choices=['admin', 'tracker'], help='User role')
     create_parser.add_argument('--password', '-p', help='Password (if not provided, will prompt interactively)')
+    create_parser.add_argument('--send-welcome-email', '-w', action='store_true',
+                               help='Send welcome email with password reset link (only for admin users)')
     
     # Delete user
     delete_parser = subparsers.add_parser('delete', help='Delete a user')
@@ -229,6 +233,12 @@ async def main():
                 print_error("Username or email already exists")
                 return
 
+            # Handle --send-welcome-email flag
+            send_welcome = getattr(args, 'send_welcome_email', False)
+            if send_welcome and args.role == 'tracker':
+                print_warning("--send-welcome-email only applies to admin users. Ignoring flag.")
+                send_welcome = False
+
             # Get password (from argument or interactively)
             if args.password:
                 password = args.password
@@ -238,7 +248,7 @@ async def main():
             if len(password) < 6:
                 print_error("Password must be at least 6 characters long")
                 return
-            
+
             # Create user
             user_data = {
                 "username": args.username,
@@ -248,9 +258,52 @@ async def main():
                 "hashed_password": get_password_hash(password),
                 "created_at": datetime.utcnow()
             }
-            
-            await db.APIUsers.insert_one(user_data)
+
+            result = await db.APIUsers.insert_one(user_data)
             print_success(f"User '{args.username}' created successfully!")
+
+            # Send welcome email if requested (only for admin users)
+            if send_welcome and args.role == 'admin':
+                print_info("Sending welcome email...")
+
+                # Get URLs from environment
+                admin_url = os.environ.get('ADMIN_URL', '')
+                webapp_url = os.environ.get('WEBAPP_URL', '')
+
+                if not admin_url:
+                    print_warning("ADMIN_URL not set. Cannot send welcome email.")
+                else:
+                    try:
+                        # Generate reset token
+                        reset_token = secrets.token_urlsafe(32)
+                        expires_at = datetime.utcnow() + timedelta(hours=24)
+
+                        # Save token to database
+                        await db.PasswordResetTokens.insert_one({
+                            "user_id": result.inserted_id,
+                            "token": reset_token,
+                            "expires_at": expires_at,
+                            "created_at": datetime.utcnow(),
+                            "used": False
+                        })
+
+                        # Send welcome email
+                        email_service = EmailService()
+                        email_sent = await email_service.send_admin_welcome_email(
+                            to_email=args.email.lower(),
+                            username=args.username,
+                            reset_token=reset_token,
+                            admin_url=admin_url,
+                            webapp_url=webapp_url,
+                            contact_email="info@openjornada.es"
+                        )
+
+                        if email_sent:
+                            print_success(f"Welcome email sent to {args.email}")
+                        else:
+                            print_warning("Failed to send welcome email. Check SMTP configuration.")
+                    except Exception as e:
+                        print_warning(f"Error sending welcome email: {str(e)}")
             
         elif args.command == 'delete':
             await delete_user(args.username)
