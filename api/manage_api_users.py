@@ -276,16 +276,18 @@ async def main():
                     try:
                         # Generate reset token
                         reset_token = secrets.token_urlsafe(32)
-                        expires_at = datetime.utcnow() + timedelta(hours=24)
+                        reset_token_expires = datetime.utcnow() + timedelta(hours=24)
 
-                        # Save token to database
-                        await db.PasswordResetTokens.insert_one({
-                            "user_id": result.inserted_id,
-                            "token": reset_token,
-                            "expires_at": expires_at,
-                            "created_at": datetime.utcnow(),
-                            "used": False
-                        })
+                        # Save token to user document (same format as forgot-password)
+                        await db.APIUsers.update_one(
+                            {"_id": result.inserted_id},
+                            {
+                                "$set": {
+                                    "reset_token": reset_token,
+                                    "reset_token_expires": reset_token_expires
+                                }
+                            }
+                        )
 
                         # Send welcome email
                         email_service = EmailService()
